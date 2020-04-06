@@ -1,0 +1,59 @@
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Examination Registration Form</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <form novalidate [formGroup]="form" (ngSubmit)="onSave()" >
+            <mat-form-field>
+                <mat-label>Firstname</mat-label>
+                <input matInput type="text" formControlName="firstname" placeholder="Enter your Firstname" required>
+                <mat-error *ngIf="form.get('firstname').invalid || 
+                form.get('firstname').touched ">Please Enter your firstname</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Lastname</mat-label>
+                <input matInput type="text" formControlName="lastname" placeholder="Enter your Lastname" required>
+                 <mat-error *ngIf="form.get('lastname').invalid || 
+                form.get('lastname').touched ">Please Enter your lastname</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>E-mail</mat-label>
+                <input matInput type="email" formControlName="email" placeholder="Enter your Email" required>
+                <mat-error *ngIf="form.get('email').invalid || 
+                form.get('email').touched ">Please Enter a valid email</mat-error>
+                <!-- <mat-error *ngIf="form.get('email').errors.email">Please Enter a valid email</mat-error> -->
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Address</mat-label>
+                <input matInput type="text" formControlName="address" placeholder="Enter your address" required>
+                <mat-error *ngIf="form.get('address').invalid || 
+                form.get('address').touched ">Please Enter your address</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Phone-Number</mat-label>
+                <input matInput type="number" formControlName="phone" placeholder="Enter your PhoneNumber" required>
+                <mat-error *ngIf="form.get('phone').invalid || 
+                form.get('phone').touched ">Please Enter your lastname</mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="date" formControlName="dob" placeholder="Date Of Birth" required>
+                <mat-error *ngIf="form.get('dob').invalid || 
+                form.get('dob').touched ">Please Enter your date of birth</mat-error>
+            </mat-form-field>
+            <mat-radio-group formControlName="gender" required>
+                <mat-radio-button  value="male">Male</mat-radio-button>
+                <mat-radio-button  value="female">Female</mat-radio-button>
+            </mat-radio-group>
+            <mat-form-field>
+                <mat-label>State</mat-label>
+                <mat-select formControlName="state" required>
+                  <mat-option *ngFor="let state of states" [value]="state.value">
+                    {{state.viewValue}}
+                  </mat-option>
+                  <mat-error *ngIf="form.get('state').invalid ">Please Select your state</mat-error>
+                </mat-select>
+              </mat-form-field>
+            <button mat-raised-button color="warn" type="submit"> Save </button>
+        </form>
+    </mat-card-content>
+</mat-card>
