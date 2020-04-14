@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
    MatToolbarModule,
@@ -36,7 +37,8 @@ import { RegListComponent } from './Students/Reg-list/Reg-list.component';
     MatButtonModule,
     MatSelectModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    HttpClientModule
 
   ],
   providers: [],

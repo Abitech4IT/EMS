@@ -3,7 +3,10 @@
         <mat-card-title>Examination Registration Form</mat-card-title>
     </mat-card-header>
     <mat-card-content>
-        <form novalidate [formGroup]="form" (ngSubmit)="onSave()" >
+        <form novalidate [formGroup]="form" #formDirective="ngForm" (ngSubmit)="onSave(formDirective)" >
+            <mat-form-field>
+                <input matInput type="text" readonly formControlName="regno" >
+            </mat-form-field>
             <mat-form-field>
                 <mat-label>Firstname</mat-label>
                 <input matInput type="text" formControlName="firstname" placeholder="Enter your Firstname" required>
@@ -50,8 +53,8 @@
                   <mat-option *ngFor="let state of states" [value]="state.value">
                     {{state.viewValue}}
                   </mat-option>
-                  <mat-error *ngIf="form.get('state').invalid ">Please Select your state</mat-error>
                 </mat-select>
+                <mat-error *ngIf="form.get('state').invalid ">Please Select your state</mat-error>
               </mat-form-field>
             <button mat-raised-button color="warn" type="submit"> Save </button>
         </form>

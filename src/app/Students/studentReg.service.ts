@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
-import { Regform } from './Reg.model';
+import { IRegform } from './Reg.model';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class StudentRegService{
-    private Regform: Regform[] = [];
-    private regUpdated = new Subject<Regform[]>();
+    private RegForm: IRegform[] = [];
+    private regUpdated = new Subject<IRegform[]>();    
+    
+
+    constructor(private http: HttpClient){}
 
     getregLists(){
-        return [...this.Regform];
+       this.http.get<{message: string, Reglists: IRegform[]}>('http://localhost:3000/api/Reglist')
+        .subscribe(ReglistData => {
+            this.RegForm = ReglistData.Reglists;
+            this.regUpdated.next([...this.RegForm]);
+        });
     }
 
     getregUpdateListener(){
         return this.regUpdated.asObservable();
     }
 
-    addReg(fname: string, lname: string, email: string, address: string,
+
+    addReg(fname: string, lname: string, email: string, regno: string,  address: string,
          phone: string, dob: string, state: string, gender: string) {
-             const regInfo: Regform = {
+             const regInfo: IRegform = {
                  id: null,
+                 regno: regno,
                  firstname: fname,
                  lastname: lname,
                  email: email,
@@ -28,9 +38,13 @@ export class StudentRegService{
                  state: state,
                  gender: gender
                 };
-        this.Regform.push(regInfo);
-        this.regUpdated.next([...this.Regform]);
-
+        this.http.post<{message: string}>('http://localhost:3000/api/Reglist', regInfo)
+        .subscribe(responseData =>{
+            console.log(responseData.message);
+            this.RegForm.push(regInfo);
+            this.regUpdated.next([...this.RegForm]);
+        });
+        
     }
     
 

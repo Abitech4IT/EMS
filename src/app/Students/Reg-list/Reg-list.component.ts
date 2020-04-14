@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Regform } from '../Reg.model';
+import { IRegform } from '../Reg.model';
 import { StudentRegService } from '../studentReg.service';
 import { MatTableDataSource } from '@angular/material';
 
@@ -10,16 +10,18 @@ import { MatTableDataSource } from '@angular/material';
     styleUrls: ['./Reg-list.component.css']
     
 })
+
 export class RegListComponent implements OnInit, OnDestroy{
 
-    studentData: Regform[] = [];
+    studentData: IRegform[] = [];
     private regSub: Subscription;
-    private dataSource;
+    private dataSource;    
 
     constructor(private studentreg: StudentRegService){}
 
     displayedColumns: string[] = [
-        'id',
+        'index',
+        'regno',
         'firstname',
         'lastname',
         'email',
@@ -30,14 +32,17 @@ export class RegListComponent implements OnInit, OnDestroy{
         'state'
      ];
 
+    //  columnsToDisplay: string[] = this.displayedColumns.slice();
+
     ngOnInit(){
-        this.studentData = this.studentreg.getregLists();
+        
+        this.studentreg.getregLists();
         this.regSub = this.studentreg.getregUpdateListener()
-        .subscribe((studentData: Regform[]) =>{
+        .subscribe((studentData: IRegform[]) =>{
             this.studentData = studentData;
             this.dataSource = new MatTableDataSource(studentData);
         });
-        // console.log(this.studentData);
+         
     }
 
     ngOnDestroy(){
