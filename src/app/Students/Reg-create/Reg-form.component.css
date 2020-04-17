@@ -1,4 +1,7 @@
-
+.container{
+    width: 70%;
+    margin: 1rem auto;
+}
 mat-form-field, input {
     width: 100%;
 }

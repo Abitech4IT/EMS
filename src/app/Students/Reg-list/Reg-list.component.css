@@ -1,3 +1,8 @@
+.container{
+  width: 70%;
+  margin: 1rem auto;
+}
+
 table {
     width: 100%;
   }

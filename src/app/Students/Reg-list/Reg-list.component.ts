@@ -29,7 +29,8 @@ export class RegListComponent implements OnInit, OnDestroy{
         'phone',
         'dob',
         'gender',
-        'state'
+        'state',
+        'action'
      ];
 
     //  columnsToDisplay: string[] = this.displayedColumns.slice();
@@ -43,6 +44,10 @@ export class RegListComponent implements OnInit, OnDestroy{
             this.dataSource = new MatTableDataSource(studentData);
         });
          
+    }
+
+    onDelete(regid: string){
+        this.studentreg.deleteReg(regid);
     }
 
     ngOnDestroy(){
