@@ -10,7 +10,8 @@ import {
    MatButtonModule,
    MatSelectModule,
    MatRadioModule,
-   MatTableModule
+   MatTableModule,
+   MatDialogModule
    } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -20,6 +21,8 @@ import { RegListComponent } from './Students/Reg-list/Reg-list.component';
 import { FrontPageComponent } from './Students/Front-Page/front-page.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
+import { RegEditComponent } from './Students/Reg-Edit/Reg-edit.component';
+import { RegDialogEditComponent } from './Students/Reg-Edit/Reg-DialogEdit.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,9 @@ import { FooterComponent } from './footer/footer.component';
     FooterComponent,
     RegformComponent,
     RegListComponent,
-    FrontPageComponent
+    FrontPageComponent,
+    RegEditComponent,
+    RegDialogEditComponent
     
 
   ],
@@ -44,10 +49,13 @@ import { FooterComponent } from './footer/footer.component';
     MatSelectModule,
     MatRadioModule,
     MatTableModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule
+
 
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [RegListComponent, RegEditComponent]
 })
 export class AppModule { }

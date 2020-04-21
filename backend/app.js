@@ -50,12 +50,45 @@ app.post("/api/Reglist", (req, res, next) => {
    
 });
 
+app.put("/api/Reglist/:id",(req, res, next) => {
+    const updatedList = new Reg({
+        _id: req.body.id,
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        regno: req.body.regno,
+        address: req.body.address,
+        phone: req.body.phone,
+        dob: req.body.dob,
+        gender: req.body.gender,
+        state: req.body.state
+    });
+    Reg.updateOne({_id: req.params.id}, updatedList).then(result =>{
+        res.status(200).json({
+            message: 'record Updated successfully!'
+        });
+    });
+});
+
 app.get("/api/Reglist",(req, res, next) => {
     Reg.find().then(documents => {
         res.status(200).json({
             message: 'message fetched successfully!',
             Reglists: documents
         });
+    });
+    
+});
+
+app.get("/api/Reglist",(req, res, next) => {
+    Reg.findById(req.params.id).then(data => {
+        if(data){
+            res.status(200).json({data});
+
+        }else{
+            res.status(404).json({message: 'Data not found'});
+        }
+        
     });
     
 });

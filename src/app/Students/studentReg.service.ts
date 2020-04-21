@@ -40,6 +40,13 @@ export class StudentRegService{
         return this.regUpdated.asObservable();
     }
 
+    getregList(id: string){
+        return this.http.get<{_id: string; firstname: string; lastname: string; 
+            email: string; regno: string;  address: string;
+            phone: string; dob: string; state: string; gender: string }>
+            ('http://localhost:3000/api/Reglist/' + id);
+    }
+
 
     addReg(fname: string, lname: string, email: string, regno: string,  address: string,
          phone: string, dob: string, state: string, gender: string) {
@@ -64,6 +71,32 @@ export class StudentRegService{
         });
         
     }
+
+    updateReg(id: string, fname: string, lname: string, email: string, regno: string,  address: string,
+        phone: string, dob: string, state: string, gender: string ){
+            const regInfo: IRegform = {
+                id: id,
+                regno: regno,
+                firstname: fname,
+                lastname: lname,
+                email: email,
+                address: address,
+                phone: phone,
+                dob: dob,
+                state: state,
+                gender: gender
+               };
+               this.http.put('http://localhost:3000/api/Reglist/' + id, regInfo)
+               .subscribe(response => {
+                   const updatedregs = [...this.RegForm];
+                   const oldregIndex = updatedregs.findIndex(p => p.id === regInfo.id);
+                   updatedregs[oldregIndex] = regInfo;
+                   this.RegForm = updatedregs;
+                   this.regUpdated.next([...this.RegForm]);
+               });
+
+
+        }
 
     deleteReg(regid: string){
         this.http.delete('http://localhost:3000/api/Reglist/' + regid)
