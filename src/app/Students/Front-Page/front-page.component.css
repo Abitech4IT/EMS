@@ -3,7 +3,7 @@ div {
     position: absolute;
     min-height: 500px;
     width: 100%;
-    background-image: url("image/backimg.jpg");
+    background-image: url("../../../assets/image/backimg.jpg");
 }
 
  h3 {

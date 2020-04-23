@@ -11,7 +11,8 @@ import {
    MatSelectModule,
    MatRadioModule,
    MatTableModule,
-   MatDialogModule
+   MatDialogModule,
+   MatProgressSpinnerModule,
    } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { FooterComponent } from './footer/footer.component';
 import { RegEditComponent } from './Students/Reg-Edit/Reg-edit.component';
 import { RegDialogEditComponent } from './Students/Reg-Edit/Reg-DialogEdit.component';
+import { SuccessMessageComponent } from './Students/successMessage.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { RegDialogEditComponent } from './Students/Reg-Edit/Reg-DialogEdit.compo
     RegListComponent,
     FrontPageComponent,
     RegEditComponent,
-    RegDialogEditComponent
+    RegDialogEditComponent,
+    SuccessMessageComponent
     
 
   ],
@@ -49,9 +52,9 @@ import { RegDialogEditComponent } from './Students/Reg-Edit/Reg-DialogEdit.compo
     MatSelectModule,
     MatRadioModule,
     MatTableModule,
+    MatProgressSpinnerModule,
     HttpClientModule,
     MatDialogModule
-
 
   ],
   providers: [],

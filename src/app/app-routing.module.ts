@@ -4,10 +4,12 @@ import { FrontPageComponent } from './Students/Front-Page/front-page.component';
 import { RegformComponent } from './Students/Reg-create/Reg-form.component';
 import { RegListComponent } from './Students/Reg-list/Reg-list.component';
 import { RegDialogEditComponent } from './Students/Reg-Edit/Reg-DialogEdit.component';
+import { SuccessMessageComponent } from './Students/successMessage.component';
 
 const routes: Routes = [
     {path: '', component: FrontPageComponent },
     {path: 'register', component: RegformComponent },
+    {path: 'regsuccess', component: SuccessMessageComponent},
     {path: 'list', component: RegListComponent, 
     children:[
         {

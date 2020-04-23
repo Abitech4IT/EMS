@@ -15,7 +15,7 @@ export class RegEditComponent implements OnInit{
     constructor(public dialogref: MatDialogRef<RegEditComponent>, 
         private router: Router, private route: ActivatedRoute,
         private studentreg: StudentRegService,
-        @Inject(MAT_DIALOG_DATA) public data: {reglist: IRegform}){}
+        @Inject(MAT_DIALOG_DATA) public data:{reglist: IRegform}){}
        
 
     form: FormGroup;
@@ -31,7 +31,6 @@ export class RegEditComponent implements OnInit{
             state: new FormControl(this.data.reglist.state, {validators:[Validators.required]}),
             gender: new FormControl(this.data.reglist.gender, {validators:[Validators.required]})
         });
-
 
     }
 

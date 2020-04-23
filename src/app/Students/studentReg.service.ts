@@ -3,6 +3,7 @@ import { IRegform } from './Reg.model';
 import { Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({providedIn: 'root'})
 export class StudentRegService{
@@ -10,7 +11,7 @@ export class StudentRegService{
     private regUpdated = new Subject<IRegform[]>();    
     
 
-    constructor(private http: HttpClient){}
+    constructor(private http: HttpClient, private router: Router){}
 
     getregLists(){
        this.http.get<{message: string, Reglists: any}>('http://localhost:3000/api/Reglist')
@@ -41,10 +42,13 @@ export class StudentRegService{
     }
 
     getregList(id: string){
+
         return this.http.get<{_id: string; firstname: string; lastname: string; 
             email: string; regno: string;  address: string;
             phone: string; dob: string; state: string; gender: string }>
             ('http://localhost:3000/api/Reglist/' + id);
+
+        // return {...this.RegForm.find(p => p.id === id)};
     }
 
 
@@ -68,6 +72,7 @@ export class StudentRegService{
             regInfo.id = id;
             this.RegForm.push(regInfo);
             this.regUpdated.next([...this.RegForm]);
+            this.router.navigate(["/regsuccess"]);
         });
         
     }

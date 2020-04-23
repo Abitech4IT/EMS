@@ -12,6 +12,8 @@ import { MatTableDataSource, MatDialog } from '@angular/material';
 })
 
 export class RegListComponent implements OnInit, OnDestroy{
+    isLoading = false;
+
 
 
     studentData: IRegform[] = [];
@@ -37,10 +39,11 @@ export class RegListComponent implements OnInit, OnDestroy{
     //  columnsToDisplay: string[] = this.displayedColumns.slice();
 
     ngOnInit(){
-        
+        this.isLoading = true;
         this.studentreg.getregLists();
         this.regSub = this.studentreg.getregUpdateListener()
         .subscribe((studentData: IRegform[]) =>{
+            this.isLoading = false;
             this.studentData = studentData;
             this.dataSource = new MatTableDataSource(studentData);
         });
