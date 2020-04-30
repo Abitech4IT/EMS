@@ -1,10 +1,38 @@
 const express = require("express"); 
+const multer = require("multer");
+
 const Reg = require("../models/RegSchema");
 
 
 const router = express.Router();
 
-router.post("", (req, res, next) => {
+const MIME_TYPE_MAP = {
+    'image/png': 'png',
+    'image/jpg': 'jpg',
+    'image/jpeg': 'jpg'
+};
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      const isValid = MIME_TYPE_MAP[file.mimetype];
+      let error = new Error("Invalid mime type");
+      if (isValid) {
+        error = null;
+      }
+      cb(error, "backend/images");
+    },
+    filename: (req, file, cb) => {
+      const name = file.originalname
+        .toLowerCase()
+        .split(" ")
+        .join("-");
+      const ext = MIME_TYPE_MAP[file.mimetype];
+      cb(null, name + "-" + Date.now() + "." + ext);
+    }
+  });
+
+router.post("", multer({storage: storage}).single("image"), (req, res, next) => {
+    const url = req.protocol + '://' + req.get("host");
     const addedList = new Reg({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -14,19 +42,29 @@ router.post("", (req, res, next) => {
         phone: req.body.phone,
         dob: req.body.dob,
         gender: req.body.gender,
-        state: req.body.state
+        state: req.body.state,
+        imagePath: url + "/images/" + req.file.filename
     });
     addedList.save().then(createdList => {
         res.status(201).json({
             message: "List added successfully!",
-            regId: createdList._id
+            regs: {
+                ...createdList,
+                id: createdList._id
+            }
         });
 
     });
    
 });
 
-router.put("/:id",(req, res, next) => {
+router.put("/:id", multer({storage: storage}).single("image"), (req, res, next) => {
+    let imagePath = req.body.imagePath;
+    if(req.file){
+        const url = req.protocol + '://' + req.get("host");
+        imagePath = url + "/images/" + req.file.filename;
+
+    }
     const updatedList = new Reg({
         _id: req.body.id,
         firstname: req.body.firstname,
@@ -37,7 +75,8 @@ router.put("/:id",(req, res, next) => {
         phone: req.body.phone,
         dob: req.body.dob,
         gender: req.body.gender,
-        state: req.body.state
+        state: req.body.state,
+        imagePath: imagePath
     });
     Reg.updateOne({_id: req.params.id}, updatedList).then(result =>{
         res.status(200).json({

@@ -8,4 +8,21 @@ mat-form-field, input {
 
 .mat-radio-button ~ .mat-radio-button {
     margin-left: 16px;
-  }
+}
+
+.filepicker{
+    margin-bottom:10px;
+}
+
+input[type="file"] {
+    visibility: hidden;
+}
+
+.image-preview {
+    height: 5rem;
+    margin: 1rem 0;
+}
+
+.image-preview img{
+    height: 100%;
+}

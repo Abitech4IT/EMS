@@ -4,12 +4,14 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { IRegform } from '../Reg.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StudentRegService } from '../studentReg.service';
+import { mimeType } from '../Reg-create/mime-type.validator';
 
 @Component({
     templateUrl: './Reg-edit.component.html',
     styleUrls: ['./Reg-edit.component.css']
 })
 export class RegEditComponent implements OnInit{
+    imagePreview: string;
 
 
     constructor(public dialogref: MatDialogRef<RegEditComponent>, 
@@ -25,11 +27,14 @@ export class RegEditComponent implements OnInit{
             firstname: new FormControl(this.data.reglist.firstname, {validators:[Validators.required]}),
             lastname: new FormControl(this.data.reglist.lastname, {validators:[Validators.required]}),
             email: new FormControl(this.data.reglist.email, {validators:[Validators.required, Validators.email]}),
+            regno: new FormControl(this.data.reglist.regno),
             address: new FormControl(this.data.reglist.address, {validators:[Validators.required]}),
             phone: new FormControl(this.data.reglist.phone, {validators:[Validators.required]}),
             dob: new FormControl(this.data.reglist.dob, {validators:[Validators.required]}),
             state: new FormControl(this.data.reglist.state, {validators:[Validators.required]}),
-            gender: new FormControl(this.data.reglist.gender, {validators:[Validators.required]})
+            gender: new FormControl(this.data.reglist.gender, {validators:[Validators.required]}),
+            image: new FormControl(this.data.reglist.imagePath, {validators:[Validators.required], 
+                asyncValidators: [mimeType]})
         });
 
     }
@@ -45,7 +50,8 @@ export class RegEditComponent implements OnInit{
             this.form.value.phone,
             this.form.value.dob,
             this.form.value.state,
-            this.form.value.gender
+            this.form.value.gender,
+            this.form.value.image
             );
             this.dialogref.close();
             this.router.navigate(['/list'], {relativeTo: this.route} );
@@ -64,6 +70,17 @@ export class RegEditComponent implements OnInit{
         {value: 'Lagos', viewValue: 'Lagos'},
         {value: 'Ogun', viewValue: 'Ogun'}
       ];
+
+      onImagePicked(event: Event){
+        const file = (event.target as HTMLInputElement).files[0];
+        this.form.patchValue({image: file});
+        this.form.get('image').updateValueAndValidity();
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.imagePreview = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+      }
 
 }
 

@@ -36,7 +36,8 @@ export class RegDialogEditComponent implements OnInit{
                         phone: regData.phone,
                         dob: regData.dob,
                         state: regData.state,
-                        gender: regData.gender
+                        gender: regData.gender,
+                        imagePath: regData.imagePath
                     };
                      const dialogRef = this.dialog.open(RegEditComponent, {width: '600px',
                         data: {

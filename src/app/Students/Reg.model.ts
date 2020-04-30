@@ -9,6 +9,7 @@ export interface IRegform {
     dob: string;
     gender: string;
     state: string;
+    imagePath: string;
 }
 
 

@@ -9,4 +9,17 @@ table {
   mat-spinner{
     margin: auto;
   }
+
+  /* mat-paginator{
+    margin-top: 1rem;
+  } */
+  
+  .reg-image{
+    height: 3rem;
+    margin: 1rem 0;
+  }
+  
+  .reg-image img{
+    height: 100%;
+  }
   

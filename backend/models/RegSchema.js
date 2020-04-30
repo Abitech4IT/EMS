@@ -9,6 +9,7 @@ const regSchema = mongoose.Schema({
     phone: {type: String, required: true},
     dob: {type: String, required: true},
     gender: {type: String, required: true},
-    state: {type: String, required: true}
+    state: {type: String, required: true},
+    imagePath: {type: String, required: true}
 });
 module.exports = mongoose.model('Reg', regSchema);

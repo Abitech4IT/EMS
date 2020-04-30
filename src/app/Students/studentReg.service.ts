@@ -27,7 +27,8 @@ export class StudentRegService{
                 dob: reglist.dob,
                 gender: reglist.gender,
                 state: reglist.state,
-                id: reglist._id
+                id: reglist._id,
+                imagePath: reglist.imagePath
                };
            });
        }))
@@ -45,31 +46,41 @@ export class StudentRegService{
 
         return this.http.get<{_id: string; firstname: string; lastname: string; 
             email: string; regno: string;  address: string;
-            phone: string; dob: string; state: string; gender: string }>
+            phone: string; dob: string; state: string; gender: string; imagePath: string }>
             ('http://localhost:3000/api/Reglist/' + id);
 
         // return {...this.RegForm.find(p => p.id === id)};
     }
 
 
-    addReg(fname: string, lname: string, email: string, regno: string,  address: string,
-         phone: string, dob: string, state: string, gender: string) {
-             const regInfo: IRegform = {
-                 id: null,
-                 regno: regno,
-                 firstname: fname,
-                 lastname: lname,
-                 email: email,
-                 address: address,
-                 phone: phone,
-                 dob: dob,
-                 state: state,
-                 gender: gender
-                };
-        this.http.post<{message: string, regId: string}>('http://localhost:3000/api/Reglist', regInfo)
+    addReg(firstname: string, lastname: string, email: string, regno: string,  address: string,
+         phone: string, dob: string, state: string, gender: string, image: File) {
+            const regData = new FormData();
+            regData.append("regno", regno);
+            regData.append("firstname", firstname);
+            regData.append("lastname", lastname);
+            regData.append("email", email);
+            regData.append("address", address);
+            regData.append("phone", phone);
+            regData.append("dob", dob);
+            regData.append("state", state);
+            regData.append("gender", gender);
+            regData.append("image", image, firstname);
+        this.http.post<{message: string, regs: IRegform}>('http://localhost:3000/api/Reglist', regData)
         .subscribe(responseData =>{
-            const id = responseData.regId;
-            regInfo.id = id;
+            const regInfo: IRegform = {
+                id: responseData.regs.id,
+                regno: regno,
+                firstname: firstname,        
+                lastname: lastname,
+                email: email,
+                address: address,
+                phone: phone,
+                dob: dob,
+                state: state,
+                gender: gender,
+                imagePath: responseData.regs.imagePath
+              };
             this.RegForm.push(regInfo);
             this.regUpdated.next([...this.RegForm]);
             this.router.navigate(["/regsuccess"]);
@@ -77,31 +88,60 @@ export class StudentRegService{
         
     }
 
-    updateReg(id: string, fname: string, lname: string, email: string, regno: string,  address: string,
-        phone: string, dob: string, state: string, gender: string ){
-            const regInfo: IRegform = {
-                id: id,
-                regno: regno,
-                firstname: fname,
-                lastname: lname,
-                email: email,
-                address: address,
-                phone: phone,
-                dob: dob,
-                state: state,
-                gender: gender
-               };
-               this.http.put('http://localhost:3000/api/Reglist/' + id, regInfo)
+    updateReg(id: string, firstname: string, lastname: string, email: string, regno: string,  address: string,
+        phone: string, dob: string, state: string, gender: string, image: File | string ){
+            let regData: IRegform | FormData;
+            if(typeof image === "object"){
+                regData = new FormData();
+                regData.append("id", id);
+                regData.append("regno", regno);
+                regData.append("firstname", firstname);
+                regData.append("lastname", lastname);
+                regData.append("email", email);
+                regData.append("address", address);
+                regData.append("phone", phone);
+                regData.append("dob", dob);
+                regData.append("state", state);
+                regData.append("gender", gender);
+                regData.append("image", image, firstname);
+
+            } else {
+                regData = {
+                    id: id,
+                    regno: regno,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    address: address,
+                    phone: phone,
+                    dob: dob,
+                    state: state,
+                    gender: gender, 
+                    imagePath: image
+                }
+            }
+               this.http.put('http://localhost:3000/api/Reglist/' + id, regData)
                .subscribe(response => {
                    const updatedregs = [...this.RegForm];
-                   const oldregIndex = updatedregs.findIndex(p => p.id === regInfo.id);
+                   const oldregIndex = updatedregs.findIndex(p => p.id === id);
+                   const regInfo: IRegform = {
+                    id: id,
+                    regno: regno,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    address: address,
+                    phone: phone,
+                    dob: dob,
+                    state: state,
+                    gender: gender, 
+                    imagePath: ""
+                }
                    updatedregs[oldregIndex] = regInfo;
                    this.RegForm = updatedregs;
                    this.regUpdated.next([...this.RegForm]);
                });
-
-
-        }
+         }
 
     deleteReg(regid: string){
         this.http.delete('http://localhost:3000/api/Reglist/' + regid)
@@ -111,7 +151,5 @@ export class StudentRegService{
             this.regUpdated.next([...this.RegForm]);
         });
     }
-    
-
 
 }

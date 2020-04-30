@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { IRegform } from '../Reg.model';
 import { StudentRegService } from '../studentReg.service';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatTableDataSource } from '@angular/material';
 
 @Component({
     selector:'app-Reglist',
@@ -25,6 +25,7 @@ export class RegListComponent implements OnInit, OnDestroy{
     displayedColumns: string[] = [
         'index',
         'regno',
+        'image',
         'firstname',
         'lastname',
         'email',
@@ -50,7 +51,6 @@ export class RegListComponent implements OnInit, OnDestroy{
          
     }
 
-   
 
     onDelete(regid: string){
         this.studentreg.deleteReg(regid);
