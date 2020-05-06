@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
    MatToolbarModule,
@@ -13,6 +13,7 @@ import {
    MatTableModule,
    MatDialogModule,
    MatProgressSpinnerModule,
+   MatPaginatorModule,
    } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -25,6 +26,9 @@ import { FooterComponent } from './footer/footer.component';
 import { RegEditComponent } from './Students/Reg-Edit/Reg-edit.component';
 import { RegDialogEditComponent } from './Students/Reg-Edit/Reg-DialogEdit.component';
 import { SuccessMessageComponent } from './Students/successMessage.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
+import { AuthInterceptor } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -36,14 +40,16 @@ import { SuccessMessageComponent } from './Students/successMessage.component';
     FrontPageComponent,
     RegEditComponent,
     RegDialogEditComponent,
-    SuccessMessageComponent
+    SuccessMessageComponent,
+    LoginComponent,
+    SignupComponent
     
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatInputModule,
@@ -54,10 +60,11 @@ import { SuccessMessageComponent } from './Students/successMessage.component';
     MatTableModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    MatPaginatorModule,
     MatDialogModule
 
   ],
-  providers: [],
+  providers: [{provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}],
   bootstrap: [AppComponent],
   entryComponents: [RegListComponent, RegEditComponent]
 })

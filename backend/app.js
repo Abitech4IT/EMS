@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const regsRoute = require("./routes/regs");
+const userRoute = require("./routes/user");
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/Reglist", regsRoute);
+app.use("/api/user", userRoute);
+
 
 
 

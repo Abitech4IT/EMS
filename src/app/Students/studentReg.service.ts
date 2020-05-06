@@ -8,15 +8,16 @@ import { Router } from '@angular/router';
 @Injectable({providedIn: 'root'})
 export class StudentRegService{
     private RegForm: IRegform[] = [];
-    private regUpdated = new Subject<IRegform[]>();    
+    private regUpdated = new Subject<{Regs: IRegform[], regCount: number}>();    
     
 
     constructor(private http: HttpClient, private router: Router){}
 
-    getregLists(){
-       this.http.get<{message: string, Reglists: any}>('http://localhost:3000/api/Reglist')
+    getregLists(RegsPerPage: number, currentPage: number){
+        const queryParams = `?pagesize=${RegsPerPage}&page=${currentPage}`;
+       this.http.get<{message: string, reglists: any, maxReglists: number}>('http://localhost:3000/api/Reglist' + queryParams)
        .pipe(map((ReglistData) => {
-           return ReglistData.Reglists.map(reglist => {
+           return { regs: ReglistData.reglists.map(reglist => {
                return {
                 firstname: reglist.firstname,
                 lastname: reglist.lastname,
@@ -30,11 +31,11 @@ export class StudentRegService{
                 id: reglist._id,
                 imagePath: reglist.imagePath
                };
-           });
+           }),regLength: ReglistData.maxReglists };
        }))
         .subscribe(transformreglistData => {
-            this.RegForm = transformreglistData;
-            this.regUpdated.next([...this.RegForm]);
+            this.RegForm = transformreglistData.regs;
+            this.regUpdated.next({Regs:[...this.RegForm], regCount: transformreglistData.regLength});
         });
     }
 
@@ -82,7 +83,7 @@ export class StudentRegService{
                 imagePath: responseData.regs.imagePath
               };
             this.RegForm.push(regInfo);
-            this.regUpdated.next([...this.RegForm]);
+            this.regUpdated.next({Regs:[...this.RegForm], regCount: null});
             this.router.navigate(["/regsuccess"]);
         });
         
@@ -139,17 +140,12 @@ export class StudentRegService{
                 }
                    updatedregs[oldregIndex] = regInfo;
                    this.RegForm = updatedregs;
-                   this.regUpdated.next([...this.RegForm]);
+                   this.regUpdated.next({Regs:[...this.RegForm], regCount: null});
                });
          }
 
     deleteReg(regid: string){
-        this.http.delete('http://localhost:3000/api/Reglist/' + regid)
-        .subscribe(()=>{
-            const updatedRegform = this.RegForm.filter(reg => reg.id !== regid);
-            this.RegForm = updatedRegform;
-            this.regUpdated.next([...this.RegForm]);
-        });
+        return this.http.delete('http://localhost:3000/api/Reglist/' + regid);
     }
 
 }

@@ -10,9 +10,9 @@ table {
     margin: auto;
   }
 
-  /* mat-paginator{
+  mat-paginator{
     margin-top: 1rem;
-  } */
+  }
   
   .reg-image{
     height: 3rem;
